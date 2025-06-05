@@ -24,6 +24,7 @@ class Simulation():
         self.dV_ges_flood = 0
         self.h_p0_flood = 0
         self.h_p0 = 0
+        self.V_dis = 0
 
     # Funktion für Koaleszenzzeit
     def tau(self, h, d_32, ID, sigma, r_s_star):
@@ -43,6 +44,13 @@ class Simulation():
             / (self.Sub.H_cd ** (1 / 6) * sigma ** (5 / 6) * R_F * r_s_star))
 
         return tau
+    
+    def get_V_dis(self):
+        V_ein = self.h_p0*self.l_in*self.Sub.D
+        V_sim = 0
+        for i in range(len(self.Sub.h_p_sim)):
+            V_sim = V_sim + self.Sub.h_p_sim[i]*self.dl*self.Sub.D
+        return (V_ein + V_sim)
     
     # Funktion für die Berechnung der Einlauflänge
     def calc_L_in(self, H_p0):
@@ -198,6 +206,7 @@ class Simulation():
         # run final calculation
         if r.converged:
             self.h_p0 = h_p0
+            self.V_dis = self.get_V_dis()
             calc_dpz(h_p0)
         else:
             print("Brentq did not converge")

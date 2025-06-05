@@ -7,15 +7,15 @@ import helper_functions as hf
 
 class Settings():
 
-    def __init__(self):
-        self.N_h = 50 # number of grid points in height direction
-        self.N_x = 100 # number of grid points in x direction
+    def __init__(self, N_h, N_x):
+        self.N_h = N_h # number of grid points in height direction
+        self.N_x = N_x # number of grid points in x direction
         self.N_dpz_loop = 20 # number of iterations in dpz-loop
 
 # Folgende Klasse beinhaltet weitere Parameter und liest Stoffwerte und Messdaten aus Excel-Dateien aus
 class Substance_System():
 
-    def __init__(self):
+    def __init__(self, L, D, D_ein):
         # constants
         self.g = 9.81
         self.eps_p = 0.9 # hold up of dense-packed zone [-]
@@ -24,9 +24,9 @@ class Substance_System():
         self.eta_v = 23e-3 # Grenzflächenverzögerungsviskosität [Pas] (Henschke1995)
         
         # settler geometry
-        self.L = 1 # length of settler
-        self.D = 0.2 # Durchmesser
-        self.D_ein = 0.017 # Einlaufdurchmesser
+        self.L = L # length of settler
+        self.D = D # Durchmesser
+        self.D_ein = D_ein # Einlaufdurchmesser
 
         # Substance parameters
         self.rho_c = 0      # Density of conti phase [kg/m³]
