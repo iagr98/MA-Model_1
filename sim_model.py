@@ -136,6 +136,7 @@ class Simulation():
         self.l_in = L_ein
         self.dV_dis_end = dV_dis
         self.h_p0 = h_p0
+        self.V_dis = self.get_V_dis()
         
         return
     

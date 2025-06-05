@@ -4,7 +4,7 @@ import helper_functions as hf
 import pandas as pd
 import numpy as np
 
-def init_sim(exp, phi_0, dV_ges, eps_0, N_x, N_h):
+def init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x):
     if (exp == "ye"):
         filename = "Paraffin_flut_20C.xlsx"
         Set = sp.Settings(N_h=N_h, N_x=N_x)
@@ -24,17 +24,20 @@ def init_sim(exp, phi_0, dV_ges, eps_0, N_x, N_h):
     SubSys.eps_0 = eps_0
     return sm.Simulation(Set, SubSys)
 
-def run_sim(exp="ye", phi_0=610e-6, dV_ges=240, eps_0=0.2, N_h=50, N_x=100):
+def run_sim(exp="ye", phi_0=610e-6, dV_ges=240, eps_0=0.2, N_h=100, N_x=700):
     Sim = init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x)
-    Sim.calc_DPZ_brentq(report=False)
+    # Sim.calc_DPZ_brentq(report=False)
+    Sim.calc_DPZ(report=False) # Results in reproducicle results
     return Sim
 
 if __name__ == '__main__':
     
-    exp = "niba3"    
-    phi_0 = 635e-6
-    dV_ges = 1150
-    eps_0 = 0.5
-    Sim = run_sim(exp, phi_0, dV_ges, eps_0)
+    exp = "ye"    
+    phi_0 = 610e-6
+    dV_ges = 240
+    eps_0 = 0.2
+    N_h = 400
+    N_x = 400
+    Sim = run_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x)
     sm.plot_h_p(Sim, henschkeData=False)
     print('V_dis: ', Sim.V_dis, '[m^3]')
