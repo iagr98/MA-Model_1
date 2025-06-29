@@ -16,6 +16,16 @@ def init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x):
         "niba_V2.xlsx" if exp == "niba2" else \
         "niba_V3.xlsx" if exp == "niba3" else \
         "niba_V4.xlsx" if exp == "niba4" else None
+    elif(exp == "2mmol_21C" or exp == "2mmol_30C" or exp == "5mmol_30C" or exp == "10mmol_21C" or exp == "10mmol_30C" or exp == "15mmol_20C" or exp == "15mmol_30C"):
+        Set = sp.Settings(N_h=N_h, N_x=N_x)
+        SubSys = sp.Substance_System(L=1.3, D=0.2, D_ein=0.05)
+        filename = "2mmolNa2CO3_21C.xlsx" if exp == "2mmol_21C" else \
+        "2mmolNa2CO3_30C.xlsx" if exp == "2mmol_30C" else \
+        "5mmolNa2CO3_30C.xlsx" if exp == "5mmol_30C" else \
+        "10mmolNa2CO3_21C.xlsx" if exp == "10mmol_21C" else \
+        "10mmolNa2CO3_30C.xlsx" if exp == "10mmol_30C" else \
+        "15mmolNa2CO3_20C.xlsx" if exp == "15mmol_20C" else \
+        "15mmolNa2CO3_30C.xlsx" if exp == "15mmol_30C" else None
     else:
         print('Test does not belong to either Ye or Niba.')
     SubSys.update(filename)
@@ -32,12 +42,10 @@ def run_sim(exp="ye", phi_0=610e-6, dV_ges=240, eps_0=0.2, N_h=100, N_x=700):
 
 if __name__ == '__main__':
     
-    exp = "ye"    
-    phi_0 = 610e-6
-    dV_ges = 240
-    eps_0 = 0.2
-    N_h = 400
-    N_x = 400
-    Sim = run_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x)
+    exp = "2mmol_21C"    
+    phi_0 = 548e-6
+    dV_ges = 991
+    eps_0 = 0.5
+    Sim = run_sim(exp, phi_0, dV_ges, eps_0)
     sm.plot_h_p(Sim, henschkeData=False)
     print('V_dis: ', Sim.V_dis, '[m^3]')

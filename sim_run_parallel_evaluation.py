@@ -5,8 +5,11 @@ from sim_run_MA_Ivan import run_sim
 
 N_CPU = 2
 
+experiments = "sozh"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
 
-df = pd.read_excel("Input/data_main.xlsx", sheet_name="main")
+
+
+df = pd.read_excel("Input/data_main.xlsx", sheet_name=experiments)
 exp = df['exp'].tolist()
 phi_0 = df['phi_0'].tolist()
 dV_ges = df['dV_ges'].tolist()
@@ -31,5 +34,5 @@ if __name__ == "__main__":
     
     # Save results
     df_results = pd.DataFrame(results)
-    df_results.to_csv('simulation_results_parallel_evaluation.csv', index=False)
+    df_results.to_csv('simulation_results_parallel_evaluation_sozh.csv', index=False)
     print("Alle Simulationen abgeschlossen. Ergebnisse gespeichert.")
