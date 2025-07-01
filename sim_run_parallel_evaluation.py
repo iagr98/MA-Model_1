@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 from sim_run_MA_Ivan import run_sim
 
-N_CPU = 2
+N_CPU = 8
 
 experiments = "sozh"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
 
