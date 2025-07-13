@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 from sim_run_MA_Ivan import run_sim
 
-N_CPU = 8
+N_CPU = 4
 
 experiments = "sozh"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
 
@@ -30,7 +30,7 @@ def parallel_simulation(params):
 if __name__ == "__main__":
     parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(len(exp))]
     
-    results = joblib.Parallel(n_jobs=N_CPU)(joblib.delayed(parallel_simulation)(param) for param in parameters)
+    results = joblib.Parallel(n_jobs=N_CPU, backend='multiprocessing')(joblib.delayed(parallel_simulation)(param) for param in parameters)
     
     # Save results
     df_results = pd.DataFrame(results)
