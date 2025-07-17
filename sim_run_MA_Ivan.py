@@ -1,7 +1,6 @@
 import sim_model as sm
 import sim_parameters as sp
 import helper_functions as hf
-import pandas as pd
 import numpy as np
 
 def init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x):

@@ -25,6 +25,7 @@ class Simulation():
         self.h_p0_flood = 0
         self.h_p0 = 0
         self.V_dis = 0
+        self.h_dpz = 0
 
     # Funktion für Koaleszenzzeit
     def tau(self, h, d_32, ID, sigma, r_s_star):
@@ -137,6 +138,7 @@ class Simulation():
         self.dV_dis_end = dV_dis
         self.h_p0 = h_p0
         self.V_dis = self.get_V_dis()
+        self.h_dpz = np.concatenate((np.ones(2)*self.h_p0,self.Sub.h_p_sim))
         
         return
     
@@ -209,6 +211,7 @@ class Simulation():
             self.h_p0 = h_p0
             self.V_dis = self.get_V_dis()
             calc_dpz(h_p0)
+            self.h_dpz = np.concatenate((np.ones(2)*self.h_p0,self.Sub.h_p_sim))
         else:
             print("Brentq did not converge")
         return
@@ -238,8 +241,8 @@ class Simulation():
 def plot_h_p(Sim, label='1', henschkeData=True):
     fig, ax = plt.subplots(figsize=(8,6))
     if henschkeData:
-        ax.plot(Sim.Sub.x_exp, Sim.Sub.h_p_exp, 'o', label='Henschke')
-    ax.plot((np.concatenate((np.linspace(0,Sim.l_in,2),Sim.Sub.x_sim + Sim.l_in)))*1000, (np.concatenate((np.ones(2)*Sim.h_p0,Sim.Sub.h_p_sim)))*1000, label='Simulation ' + label)    
+        ax.plot(Sim.Sub.x_exp, Sim.Sub.h_p_exp, 'o', label='Henschke')    
+    ax.plot((np.concatenate((np.linspace(0,Sim.l_in,2),Sim.Sub.x_sim + Sim.l_in)))*1000, Sim.h_dpz*1000, label='Simulation ' + label)    
     ax.axvline(x=1000*Sim.l_in, color='r', linestyle='--', label='Einlauflänge')
     ax.axhline(y=0, color='k')
     ax.set_xlim(0, Sim.Sub.L * 1000)

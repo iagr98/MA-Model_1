@@ -5,7 +5,7 @@ from sim_run_MA_Ivan import run_sim
 
 N_CPU = 4
 
-experiments = "sozh"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
+experiments = "detail_V_dis"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
 
 
 
@@ -22,7 +22,7 @@ def parallel_simulation(params):
     try:
         Sim = run_sim(exp, phi_0, dV_ges, eps_0)
         return {'exp': exp, 'phi_0': phi_0, 'dV_ges': dV_ges, 'eps_0': eps_0,
-                'V_dis_total': Sim.V_dis, 'status': 'success'}
+                'V_dis_total': Sim.V_dis,'h_dpz':Sim.h_dpz , 'status': 'success'}
     except Exception as e:
         print(f"Simulation failed for exp={exp}, phi_0={phi_0}, dV_ges={dV_ges}, eps_0={eps_0}: {str(e)}")
         return {'exp': exp, 'phi_0': phi_0, 'dV_ges': dV_ges, 'eps_0': eps_0, 'error': str(e), 'status': 'failed'}
@@ -34,5 +34,9 @@ if __name__ == "__main__":
     
     # Save results
     df_results = pd.DataFrame(results)
-    df_results.to_csv('simulation_results_parallel_evaluation_sozh.csv', index=False)
+    h_dpz_columns = pd.DataFrame(df_results['h_dpz'].tolist())   # Convert h_dpz (list of arrays) into separate columns
+    h_dpz_columns.columns = [f'h_dpz_{i}' for i in range(h_dpz_columns.shape[1])]
+    df_results = pd.concat([df_results, h_dpz_columns], axis=1)  # Concatenate V_dis columns with the main result dataframe
+    
+    df_results.to_csv('simulation_results_parallel_evaluation_detail.csv', index=False)
     print("Alle Simulationen abgeschlossen. Ergebnisse gespeichert.")
