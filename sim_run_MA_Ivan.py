@@ -35,16 +35,15 @@ def init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x):
 
 def run_sim(exp="ye", phi_0=610e-6, dV_ges=240, eps_0=0.2, N_h=100, N_x=700):
     Sim = init_sim(exp, phi_0, dV_ges, eps_0, N_h, N_x)
-    # Sim.calc_DPZ_brentq(report=False)
-    Sim.calc_DPZ(report=False) # Results in reproducicle results
+    Sim.calc_DPZ_brentq(report=False)
+    # Sim.calc_DPZ(report=False) # Results in reproducicle results
     return Sim
 
 if __name__ == '__main__':
     
     exp = "2mmol_21C"    
     phi_0 = 548e-6
-    dV_ges = 991
+    dV_ges = 750
     eps_0 = 0.5
     Sim = run_sim(exp, phi_0, dV_ges, eps_0)
     sm.plot_h_p(Sim, henschkeData=False)
-    print('V_dis: ', Sim.V_dis, '[m^3]')
