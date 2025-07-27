@@ -42,5 +42,5 @@ if __name__ == "__main__":
     df_results = df_results.drop(columns=['l_dpz'])
     df_results = pd.concat([df_results, h_dpz_columns, l_dpz_columns], axis=1)  # Concatenate V_dis columns with the main result dataframe
 
-    df_results.to_csv('simulation_results_parallel_evaluation_detail.csv', index=False)
+    df_results.to_csv('simulation_results_parallel_evaluation_detail_new_fit.csv', index=False)
     print("Alle Simulationen abgeschlossen. Ergebnisse gespeichert.")
