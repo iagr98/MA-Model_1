@@ -26,6 +26,7 @@ class Simulation():
         self.h_p0 = 0
         self.V_dis = 0
         self.h_dpz = 0
+        self.dpz_flooded = False
 
     # Funktion für Koaleszenzzeit
     def tau(self, h, d_32, ID, sigma, r_s_star):
@@ -140,7 +141,9 @@ class Simulation():
         self.V_dis = self.get_V_dis()
         self.h_dpz = np.concatenate((np.ones(2)*self.h_p0,self.Sub.h_p_sim))
         self.l_dpz = np.concatenate((np.linspace(0,self.l_in,2),self.Sub.x_sim + self.l_in))
-        
+        idx = np.argmin(np.abs(self.l_dpz - self.Sub.L))
+        h_at_L = self.h_dpz[idx]
+        self.dpz_flooded = False if h_at_L==0 else True
         return
     
     def calc_DPZ_brentq(self, report=False):
@@ -214,6 +217,9 @@ class Simulation():
             calc_dpz(h_p0)
             self.h_dpz = np.concatenate((np.ones(2)*self.h_p0,self.Sub.h_p_sim))
             self.l_dpz = np.concatenate((np.linspace(0,self.l_in,2),self.Sub.x_sim + self.l_in))
+            idx = np.argmin(np.abs(self.l_dpz - self.Sub.L))
+            h_at_L = self.h_dpz[idx]
+            self.dpz_flooded = False if h_at_L==0 else True
         else:
             print("Brentq did not converge")
         return

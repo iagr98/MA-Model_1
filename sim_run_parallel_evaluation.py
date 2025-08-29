@@ -3,18 +3,6 @@ import pandas as pd
 import joblib
 from sim_run_MA_Ivan import run_sim
 
-N_CPU = 4
-
-experiments = "detail_V_dis"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
-
-
-
-df = pd.read_excel("Input/data_main.xlsx", sheet_name=experiments)
-exp = df['exp'].tolist()
-phi_0 = df['phi_0'].tolist()
-dV_ges = df['dV_ges'].tolist()
-eps_0 = df['eps_0'].tolist()
-
 
 def parallel_simulation(params):
     exp, phi_0, dV_ges, eps_0 = params
@@ -22,13 +10,25 @@ def parallel_simulation(params):
     try:
         Sim = run_sim(exp, phi_0, dV_ges, eps_0)
         return {'exp': exp, 'phi_0': phi_0, 'dV_ges': dV_ges, 'eps_0': eps_0,
-                'V_dis_total': Sim.V_dis,'h_dpz':Sim.h_dpz , 'l_dpz': Sim.l_dpz, 'status': 'success'}
+                'V_dis_total': Sim.V_dis,'h_dpz':Sim.h_dpz , 'l_dpz': Sim.l_dpz,
+                 'dpz_flooded':Sim.dpz_flooded, 'status': 'success'}
     except Exception as e:
         print(f"Simulation failed for exp={exp}, phi_0={phi_0}, dV_ges={dV_ges}, eps_0={eps_0}: {str(e)}")
         return {'exp': exp, 'phi_0': phi_0, 'dV_ges': dV_ges, 'eps_0': eps_0, 'error': str(e), 'status': 'failed'}
 
 if __name__ == "__main__":
-    parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(len(exp))]
+
+    N_CPU = 4
+
+    # experiments = "detail_V_dis"   # "main" for niba and ye or "sozh" for tests from AVT.FVT lab.
+    # df = pd.read_excel("Input/data_main.xlsx", sheet_name=experiments)
+    df = pd.read_csv("Input/df_te_dpz.csv")
+    exp = df['exp'].tolist()
+    phi_0 = df['phi_0'].tolist()
+    dV_ges = df['dV_ges'].tolist()
+    eps_0 = df['eps_0'].tolist()
+    # parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(len(exp))]
+    parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(4)]
     
     results = joblib.Parallel(n_jobs=N_CPU, backend='multiprocessing')(joblib.delayed(parallel_simulation)(param) for param in parameters)
     
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     df_results = df_results.drop(columns=['l_dpz'])
     df_results = pd.concat([df_results, h_dpz_columns, l_dpz_columns], axis=1)  # Concatenate V_dis columns with the main result dataframe
 
-    df_results.to_csv('simulation_results_parallel_evaluation_detail_new_fit.csv', index=False)
+    df_results.to_csv('simulation_results_te_dpz.csv', index=False)
     print("Alle Simulationen abgeschlossen. Ergebnisse gespeichert.")

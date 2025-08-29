@@ -43,8 +43,8 @@ if __name__ == '__main__':
     
     exp = "2mmol_21C"    
     phi_0 = 548e-6
-    dV_ges = 750
-    eps_0 = 0.5
+    dV_ges = 150
+    eps_0 = 0.2
     Sim = run_sim(exp, phi_0, dV_ges, eps_0)
     sm.plot_h_p(Sim, henschkeData=False)
     print(Sim.dpz_flooded)
