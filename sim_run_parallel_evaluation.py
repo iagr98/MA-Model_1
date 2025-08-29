@@ -27,8 +27,7 @@ if __name__ == "__main__":
     phi_0 = df['phi_0'].tolist()
     dV_ges = df['dV_ges'].tolist()
     eps_0 = df['eps_0'].tolist()
-    # parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(len(exp))]
-    parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(4)]
+    parameters = [(exp[i], phi_0[i], dV_ges[i], eps_0[i]) for i in range(len(exp))]
     
     results = joblib.Parallel(n_jobs=N_CPU, backend='multiprocessing')(joblib.delayed(parallel_simulation)(param) for param in parameters)
     
